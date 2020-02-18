@@ -1,0 +1,43 @@
+Gherman Maria Irina @ 324 CB
+
+-------------------------------Tema 1 IOCLA------------------------------------
+
+	Pentru implementarea acestei teme am ales o abordare recursiva, care
+nu suprascrie arborele initial, ci lucreaza doar prin valori returnate.
+
+	In tema asta am pornit de la urmatoarele ipoteze:
+	- cifrele sunt intalnite doar in frunze
+	- un operator mereu are 2 copii
+
+Voi explica functiile principale ale programului:
+
+Compute - functia recursiva de parcurgere
+	Aceasta returneaza valoarea numerica corespunzatoare prin registrul 
+EAX.
+	Verificam initial primele 2 cazurii principale intalnite pentru o
+valoare care incepe cu -: daca e cifra sau operator. Verificam urmatorul byte
+daca este null sau nu si sarim la etichetele corespunzatoare.
+	Daca gasim operator, apelam recursiv functia pe stanga si dreapta lui.
+Datorita modului in care este facuta, aceste 2 apeluri vor returna primele
+cifre care trebuie interpretate in apelul operatorului corespunzator.
+	Daca gasim numar, ii facem atoi si o returnam.
+	Dupa ce am gasit numerele ce trebuie calculate, apelam functia math.
+
+Math - interpreteaza operatiile matematice
+	Primeste ca parametru 2 numere in decimal si un operator in ASCII si 
+returneaza rezultatul in decimal prin EAX.
+	Cazurile pentru +, - si * sunt triviale. Pentru impartire trebuie 
+mentionat ca tinem EDX 0 ca sa nu ne dea Arithmetic Exception si trebuie
+sa extindem semnul cu cdq.
+
+Atoi - transforma din string in decimal
+	Verificam daca avem numar negativ sau nu. Daca da, punem in ESI 1 ca sa
+tinem minte la final si ignoram minusul (adaugam 1 la ECX, indicele pozitiei
+curente in string)
+	Daca mai avem cifre (in afara de prima pe care am pus-o in EAX la
+inceput), inmultim EAX cu constanta 10 (EDI) si adaugam urmatoarea cifra, pana
+cand ajungem la final ([ECX] = 0)
+	La final, daca am avut - la inceput, facem complementul fata de 2 al
+numarului si returnam rezultatul prin EAX.
+
+-------------------------------------------------------------------------------
